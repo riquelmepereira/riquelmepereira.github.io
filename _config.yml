@@ -1,16 +1,16 @@
-title:              O blog do kelps
+title:              Riquelme Pereira 
 email:              riquelmepereira60@gmail.com
-description:        Um blog do bogl do glob do glab
+description:        Nesse blog, divulgarei meus projetos pessoais relacionados a área da Ciência de dados.
 author:             Riquelme
 baseurl:            ""
 url:                "https://riquelmepereira.github.io"
 
 # Social Profiles
-twitter_username:   Kelpz_
+twitter_username:   
 github_username:    
 facebook_username:  
-instagram_username:  
-linkedin_username:
+instagram_username: riquelmeppereira
+linkedin_username: Riquelme Pereira
 
 # Add your google-analytics ID here to activate google analytics
 google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
