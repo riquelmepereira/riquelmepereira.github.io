@@ -15,10 +15,19 @@ background: '\img\posts\primeiropost\bg-dicaprio.jpg'
     <p>Na última semana, eu li em um <a href="https://daslab-ufes.github.io/tom-hanks/">post</a> do Laboratório de Data Science da UFES uma análise sobre o melhor filme do Tom Hanks, de acordo com dados do IMDB. A autora do post se inspirou em um episódio do Rapadura Cast, onde essa mesma análise era feita, porém baseada na opinião dos casters. No final, ela comparava o resultado obtido com o do podcast.</p> 
     
     <p>Inspirado nesse post, decidi fazer uma análise um pouco diferente: encontrar o melhor filme do nosso querido e amado (<del>por alguns</del>) <b>Leonardo Di Caprio</b>, mas 
-    como não temos um episódio do Rapadura Cast que analisa os filmes do Leo, iremos comparar a nota dos filmes em alguns sites de críticas cinematográficas para escolhermos o melhor filme do DiCaprio.</p>
+    como não temos um episódio do Rapadura Cast que analisa os filmes do Leo, iremos comparar a nota dos filmes em alguns sites de críticas cinematográficas para escolhermos o melhor filme do DiCaprio.
+    Para isso, irei utilizar alguns recursos da linguagem R.</p>
     
-    <h2>Importando os Dados</h2>
-    <p></p>
+    <h2>Importando os dados</h2>
+    <p>Primeiramente, vamos importar as bibliotecas que iremos utlizar na nossa análise: </p>
+    <pre><code class="r" style="color:darkred; font-size: small;">
+        library(tidyverse)
+        library(janitor)
+    </code></pre>
+    <p>Agora, vamos utilizar a API do <a href="http://www.omdbapi.com/">OMBD</a> para a criação da base de dados. Ela concentra notas de filmes com reviews do Rotten Tomatoes, 
+        IMDB e Metacritic, além de outras variáveis relacionadas a esses filmes. Esse <a href="https://blog.curso-r.com/posts/2020-06-09-bechdel/">post</a>
+        do Blog do CursoR explica melhor a utilização dessa API. Abaixo, eu crio um vetor com os ID's dos filmes em que o DiCaprio atua, e depois uso a função que o Athos
+        do CursoR criou para gerar um dataframe com todos as informações unidas </p>
     </div>
 </body>
 
