@@ -4,7 +4,24 @@ title: "O melhor filme do DiCaprio"
 subtitle: "'O lobo de Wall-Street', 'Django', 'Ilha do Medo'? Qual será o melhor filme de um dos atores mais consagrados de Hollywood?"
 background: '\img\posts\primeiropost\bg-dicaprio.jpg'
 ---
-
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    pre{
+        border:1px solid rgb(0, 0, 20);
+        padding:10px;
+        border-radius:10px;
+        background-color: rgb(0, 0, 20);
+        color:aliceblue;
+        font-size: small;
+    }    
+  </style>
+</head>
 <body>
     <div align="justify" style="font-family: Times New Roman; font-size: 125%;" >
     <h1> O melhor filme do DiCaprio</h1>
@@ -20,15 +37,95 @@ background: '\img\posts\primeiropost\bg-dicaprio.jpg'
     
     <h2>Importando os dados</h2>
     <p>Primeiramente, vamos importar as bibliotecas que iremos utlizar na nossa análise: </p>
-    <pre><code class="r" style="color:darkred; font-size: small;">
-        library(tidyverse)
-        library(janitor)
-    </code></pre>
+
+    <pre><code>
+library(tidyverse)
+library(jsonlite)
+    </pre></code>
+
     <p>Agora, vamos utilizar a API do <a href="http://www.omdbapi.com/">OMBD</a> para a criação da base de dados. Ela concentra notas de filmes com reviews do Rotten Tomatoes, 
         IMDB e Metacritic, além de outras variáveis relacionadas a esses filmes. Esse <a href="https://blog.curso-r.com/posts/2020-06-09-bechdel/">post</a>
         do Blog do CursoR explica melhor a utilização dessa API. Abaixo, eu crio um vetor com os ID's dos filmes em que o DiCaprio atua, e depois uso a função que o Athos
-        do CursoR criou para gerar um dataframe com todos as informações unidas </p>
+        do CursoR criou para gerar um dataframe com todos as informações unidas. </p>
+
+    <pre><code>
+filmes_ids <- c('0101627', '0105156', '0108330', '0108550', '0112461', '0114214',
+    '0114702', '0117509', '0116999', '0120338', '0120744', '0120533',
+    '0163978', '0119004', '0217505', '0264464', '0338751', '0407887',
+    '0450259', '0758774', '0959337', '1130884', '1375666', '1616195',
+    '1853728', '1343092', '0993846', '1663202', '7131622' # Vetor com os ids dos filmes
+
+pega_info_imdb <- function(imdbid) { # Pegandos os dados da API. 
+    glue("http://www.omdbapi.com/?i=tt{imdbid}&apikey=50d6ce9") %>%
+        fromJSON() %>%
+        as_tibble()
+}
+            
+dados_omdb <- map(filmes_ids, pega_info_imdb) # Usando map para aplicar a função para todo id de filme.
+
+filmes_dicaprio <- data.frame() # Armazendo os valores em um dataframe único.
+for (i in 1:30){
+    filme <- dados_omdb[[i]]
+    filmes_dicaprio <- bind_rows(filmes_dicaprio, filme)
+}
+    </pre></code>
+    <p>Pronto, agora podemos dar uma olhada como nosso dataframe está formatado: </p>
+    
+    <pre><code>
+glimpse(filmes_dicaprio)
+    </pre></code>
+    <pre><code>
+    Rows: 86
+    Columns: 25
+    $ Title      chr: "Critters 3", "Critters 3", "Poison Ivy", "Poison Iv~
+    $ Year       chr: "1991", "1991", "1992", "1992", "1992", "1993", "199~
+    $ Rated      chr: "PG-13", "PG-13", "R", "R", "R", "R", "R", "R", "PG-~
+    $ Released   chr: "24 Jan 1992", "24 Jan 1992", "08 May 1992", "08 May~
+    $ Runtime    chr: "86 min", "86 min", "93 min", "93 min", "93 min", "1~
+    $ Genre      chr: "Comedy, Horror, Sci-Fi", "Comedy, Horror, Sci-Fi", ~
+    $ Director   chr: "Kristine Peterson", "Kristine Peterson", "Katt Shea~
+    $ Writer     chr: "Charles Chiodo, Edward Chiodo, Stephen Chiodo", "Ch~
+    $ Actors     chr: "John Calvin, Aimee Brooks, Christian Cousins", "Joh~
+    $ Plot       chr: "The tiny fur ball aliens that will eat anything or ~
+    $ Language   chr: "English", "English", "English", "English", "English~
+    $ Country    chr: "United States", "United States", "United States", "~
+    $ Awards     chr: "N/A", "N/A", "2 nominations", "2 nominations", "2 n~
+    $ Poster     chr: "https://m.media-amazon.com/images/M/MV5BZjg3MGU1Mjc~
+    $ Ratings    df[,2]: data.frame[24 x 2]
+    $ Metascore  chr: "N/A", "N/A", "51", "51", "51", "60", "60", "60",~
+    $ imdbRating chr: "4.5", "4.5", "5.4", "5.4", "5.4", "7.3", "7.3", "7.~
+    $ imdbVotes  chr: "11,930", "11,930", "18,233", "18,233", "18,233", "5~
+    $ imdbID     chr: "tt0101627", "tt0101627", "tt0105156", "tt0105156", ~
+    $ Type       chr: "movie", "movie", "movie", "movie", "movie", "movie"~
+    $ DVD        chr: "29 Sep 2009", "29 Sep 2009", "02 Nov 1999", "02 Nov~
+    $ BoxOffice  chr: "N/A", "N/A", "$1,829,804", "$1,829,804", "$1,829,80~
+    $ Production chr: "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/~
+    $ Website    chr: "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/~
+    $ Response   chr: "True", "True", "True", "True", "True", "True", "Tru~
+    </pre></code>
+
+    <p>Vamos arrumar o nome das colunas para um padrâo melhor de ser trabalhado. A função <code>clean_names()</code> do pacote <i>janitor</i>.
+        Note que todas as colunas foram lidas como "character", então vamos alterar para um tipo numérico a coluna que contém as notas que
+        serão usadas na análise. Além disso, temos que selecionar apenas as observações tiradas do IMDB.</p>
+    
+    <pre> 
+filmes_dicaprio <- clean_names(filmes_dicaprio)
+names(filmes_dicaprio)
+
+[1] "title"       "year"        "rated"       "released"   
+[5] "runtime"     "genre"       "director"    "writer"     
+[9] "actors"      "plot"        "language"    "country"    
+[13] "awards"      "poster"      "ratings"     "metascore"  
+[17] "imdb_rating" "imdb_votes"  "imdb_id"     "type"       
+[21] "dvd"         "box_office"  "production"  "website"    
+[25] "response"      
+    </pre>
+    
+    <pre>
+    # transformando variáveis quantitativas
+    filmes_dica
+    </pre>   
+    
     </div>
 </body>
-
-
+</html>
