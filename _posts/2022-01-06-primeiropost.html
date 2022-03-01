@@ -75,43 +75,42 @@ for (i in 1:30){
 glimpse(filmes_dicaprio)
     </pre></code>
     <pre><code>
-    Rows: 86
-    Columns: 25
-    $ Title      chr: "Critters 3", "Critters 3", "Poison Ivy", "Poison Iv~
-    $ Year       chr: "1991", "1991", "1992", "1992", "1992", "1993", "199~
-    $ Rated      chr: "PG-13", "PG-13", "R", "R", "R", "R", "R", "R", "PG-~
-    $ Released   chr: "24 Jan 1992", "24 Jan 1992", "08 May 1992", "08 May~
-    $ Runtime    chr: "86 min", "86 min", "93 min", "93 min", "93 min", "1~
-    $ Genre      chr: "Comedy, Horror, Sci-Fi", "Comedy, Horror, Sci-Fi", ~
-    $ Director   chr: "Kristine Peterson", "Kristine Peterson", "Katt Shea~
-    $ Writer     chr: "Charles Chiodo, Edward Chiodo, Stephen Chiodo", "Ch~
-    $ Actors     chr: "John Calvin, Aimee Brooks, Christian Cousins", "Joh~
-    $ Plot       chr: "The tiny fur ball aliens that will eat anything or ~
-    $ Language   chr: "English", "English", "English", "English", "English~
-    $ Country    chr: "United States", "United States", "United States", "~
-    $ Awards     chr: "N/A", "N/A", "2 nominations", "2 nominations", "2 n~
-    $ Poster     chr: "https://m.media-amazon.com/images/M/MV5BZjg3MGU1Mjc~
-    $ Ratings    df[,2]: data.frame[24 x 2]
-    $ Metascore  chr: "N/A", "N/A", "51", "51", "51", "60", "60", "60",~
-    $ imdbRating chr: "4.5", "4.5", "5.4", "5.4", "5.4", "7.3", "7.3", "7.~
-    $ imdbVotes  chr: "11,930", "11,930", "18,233", "18,233", "18,233", "5~
-    $ imdbID     chr: "tt0101627", "tt0101627", "tt0105156", "tt0105156", ~
-    $ Type       chr: "movie", "movie", "movie", "movie", "movie", "movie"~
-    $ DVD        chr: "29 Sep 2009", "29 Sep 2009", "02 Nov 1999", "02 Nov~
-    $ BoxOffice  chr: "N/A", "N/A", "$1,829,804", "$1,829,804", "$1,829,80~
-    $ Production chr: "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/~
-    $ Website    chr: "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/~
-    $ Response   chr: "True", "True", "True", "True", "True", "True", "Tru~
+Rows: 86
+Columns: 25
+$ Title      chr: "Critters 3", "Critters 3", "Poison Ivy", "Poison Iv~
+$ Year       chr: "1991", "1991", "1992", "1992", "1992", "1993", "199~
+$ Rated      chr: "PG-13", "PG-13", "R", "R", "R", "R", "R", "R", "PG-~
+$ Released   chr: "24 Jan 1992", "24 Jan 1992", "08 May 1992", "08 May~
+$ Runtime    chr: "86 min", "86 min", "93 min", "93 min", "93 min", "1~
+$ Genre      chr: "Comedy, Horror, Sci-Fi", "Comedy, Horror, Sci-Fi", ~
+$ Director   chr: "Kristine Peterson", "Kristine Peterson", "Katt Shea~
+$ Writer     chr: "Charles Chiodo, Edward Chiodo, Stephen Chiodo", "Ch~
+$ Actors     chr: "John Calvin, Aimee Brooks, Christian Cousins", "Joh~
+$ Plot       chr: "The tiny fur ball aliens that will eat anything or ~
+$ Language   chr: "English", "English", "English", "English", "English~
+$ Country    chr: "United States", "United States", "United States", "~
+$ Awards     chr: "N/A", "N/A", "2 nominations", "2 nominations", "2 n~
+$ Poster     chr: "https://m.media-amazon.com/images/M/MV5BZjg3MGU1Mjc~
+$ Ratings    df[,2]: data.frame[24 x 2]
+$ Metascore  chr: "N/A", "N/A", "51", "51", "51", "60", "60", "60",~
+$ imdbRating chr: "4.5", "4.5", "5.4", "5.4", "5.4", "7.3", "7.3", "7.~
+$ imdbVotes  chr: "11,930", "11,930", "18,233", "18,233", "18,233", "5~
+$ imdbID     chr: "tt0101627", "tt0101627", "tt0105156", "tt0105156", ~
+$ Type       chr: "movie", "movie", "movie", "movie", "movie", "movie"~
+$ DVD        chr: "29 Sep 2009", "29 Sep 2009", "02 Nov 1999", "02 Nov~
+$ BoxOffice  chr: "N/A", "N/A", "$1,829,804", "$1,829,804", "$1,829,80~
+$ Production chr: "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/~
+$ Website    chr: "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/~
+$ Response   chr: "True", "True", "True", "True", "True", "True", "Tru~
     </pre></code>
 
-    <p>Vamos arrumar o nome das colunas para um padrâo melhor de ser trabalhado. A função <code>clean_names()</code> do pacote <i>janitor</i>.
-        Note que todas as colunas foram lidas como "character", então vamos alterar para um tipo numérico a coluna que contém as notas que
-        serão usadas na análise. Além disso, temos que selecionar apenas as observações tiradas do IMDB.</p>
+    <p>Vamos arrumar o nome das colunas para um padrão melhor de ser trabalhado, com a função <code>clean_names()</code> do pacote <i>janitor</i> isso é feito facilmente.
+        Note que todas as colunas foram lidas como "character", então vamos alterar para um tipo numérico algumas colunas que
+        serão usadas na análise. Além disso, temos que selecionar apenas as observações tiradas do IMDB, pois há também dados vindos do RottenTomatoes e Metacritic.</p>
     
     <pre> 
 filmes_dicaprio <- clean_names(filmes_dicaprio)
 names(filmes_dicaprio)
-
 [1] "title"       "year"        "rated"       "released"   
 [5] "runtime"     "genre"       "director"    "writer"     
 [9] "actors"      "plot"        "language"    "country"    
@@ -122,10 +121,73 @@ names(filmes_dicaprio)
     </pre>
     
     <pre>
-    # transformando variáveis quantitativas
-    filmes_dica
-    </pre>   
-    
+# selecionando apenas as observações do IMDB
+filmes_dicaprio <- filmes_dicaprio %>% 
+    filter(ratings[,1] == "Internet Movie Database")
+
+# transformando variáveis quantitativas
+filmes_dicaprio <- filmes_dicaprio %>% 
+  mutate(n_votos = parse_number(imdb_id),
+         nota_imdb = parse_number(imdb_rating),
+         ano = parse_number(year))
+    </pre>       
     </div>
+<p> Na coluna "genre" temos os gêneros dos filmes em que o DiCapro atuou. Com a função <code>separate()</code> podemos criar colunas separadas para cada gênero e depois criarei um data frame com uma coluna somente com
+    uma coluna contendo os gêneros e outra servindo apenas de indexação:
+
+</p>
+
+<pre>
+# Separando os gêneros em um dataframe distinto.
+gen_separados <- filmes_dicaprio %>% 
+  separate(col = genre,
+           into = c("genero1", "genero2", "genero3"),
+           sep = ", ") %>% 
+  select(genero1, genero2, genero3)
+head(gen_separados)
+</pre>
+<pre>
+    genero1     genero2  genero3
+1     Comedy    Horror   Sci-Fi
+2      Drama  Thriller     NA
+3  Biography     Drama     NA
+4      Drama      NA       NA
+5  Biography     Crime    Drama
+6     Action   Romance Thriller
+</pre>
+<p>
+Vamos dar uma olhada agora nos gêneros em que o DiCaprio mais atuou:    
+</p>
+<pre>
+# data frame com os gêneros
+total <- data.frame(i = 1:length(total),
+    genero = c(gen_separado$genero1, gen_separado$genero2, 
+               gen_separado$genero3))
+
+# visualizando os gêneros mais frequentes
+total %>% 
+group_by(genero) %>% 
+count()    
+</pre>
+<pre>
+genero        n
+<'chr>     <'int>
+Drama        25
+NA           17
+Romance       8
+Biography     7
+Comedy        6
+Thriller      6
+Action        5
+Adventure     5
+Crime         5
+Sci-Fi        3
+Horror        1
+Mystery       1
+Western       1    
+</pre>
+<p>Notavelmente, "Drama" é o gênero que ele mais atuou, seguido bem de longe por romance e biografias. O valor "NA" aparece por causa da separação feita na coluna "genre", pois alguns
+    filmes não possuíam 3 gêneros descritos no IMDB, assim alguns dados ficaram faltando nas coluna "genero2" e "genero3". 
+</p>    
 </body>
 </html>
