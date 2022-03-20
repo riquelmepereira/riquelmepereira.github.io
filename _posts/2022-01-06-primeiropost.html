@@ -2,7 +2,7 @@
 layout: post
 title: "O melhor filme do DiCaprio"
 subtitle: "'O lobo de Wall-Street', 'Django', 'Ilha do Medo'? Qual será o melhor filme de um dos atores mais consagrados de Hollywood?"
-background: '\img\posts\primeiropost\bg-dicaprio.jpg'
+background: '/img/posts/primeiropost/bg-dicaprio.jpg'
 ---
 <!DOCTYPE html>
 <html lang="pt">
@@ -42,6 +42,7 @@ background: '\img\posts\primeiropost\bg-dicaprio.jpg'
         <pre><code>
     library(tidyverse)
     library(jsonlite)
+    library(plotly)
         </pre></code>
 
         <p>Agora, vamos utilizar a API do <a href="http://www.omdbapi.com/">OMBD</a> para a criação da base de dados. Ela concentra notas de filmes com reviews do Rotten Tomatoes, 
@@ -206,6 +207,11 @@ background: '\img\posts\primeiropost\bg-dicaprio.jpg'
         <p>Podemos notar que, em média, os filmes do DiCaprio tem uma nota de 7,26, enquanto seu pior filme obteve como nota 4,5 e 
             o filme com maior nota, 8,8.
         </p>
+        <p> Quais serão os filmes mais avaliados do DiCaprio? Essa pergunta é interessante para termos ideia de quais são os filmes mais populares do ator no IMDb,
+            e para isso, vamos olhar o gráfico gerado com o pacote <code><i>plotly</i></code>
+        </p>
+        <iframe src="/img/mapas-interativos/votos_notas.html" height="600px" width="100%"></iframe>
+         
     </div>   
 </body>
 </html>
