@@ -190,6 +190,11 @@ background: '/img/posts/primeiropost/bg-dicaprio.jpg'
         <p>Notavelmente, "Drama" é o gênero que ele mais atuou, seguido bem de longe por romance e biografias. O valor "NA" aparece por causa da separação feita na coluna "genre", pois alguns
         filmes não possuíam 3 gêneros descritos no IMDB, assim alguns dados ficaram faltando nas coluna "genero2" e "genero3". 
         </p>
+
+        <p> Quais atores e atrizes o DiCaprio mais contracenou? Iremos responder essa questão utilizando uma função parecida com a utilizada na contagem dos gêneros.
+        
+
+        </p>
         
         <p>Vamos dar uma olhada nas medidas descritivas das notas dos filmes, pra termos uma ideia geral de como se comportam.</p>
         <pre>
@@ -208,9 +213,26 @@ background: '/img/posts/primeiropost/bg-dicaprio.jpg'
             o filme com maior nota, 8,8.
         </p>
         <p> Quais serão os filmes mais avaliados do DiCaprio? Essa pergunta é interessante para termos ideia de quais são os filmes mais populares do ator no IMDb,
-            e para isso, vamos olhar o gráfico gerado com o pacote <code><i>plotly</i></code>
+            e para isso, vamos olhar o gráfico gerado com o pacote <code><i>plotly</i></code>, juntamente com o pacote <code><i>ggplotly</i></code>,
+            que nos permite usar o pacote <code><i>ggplot2</i></code> em conjunto. Foi escolhido esse pacote por que com ele são gerados
+            gráficos interativos que permitem ao leitor visualizar o que cada ponto representa, passando o mouse em cima de um ponto.
         </p>
-        <iframe src="/img/mapas-interativos/votos_notas.html" height="600px" width="100%"></iframe>
+        <pre>
+        fig <- filmes_dicaprio %>% 
+        ggplot(aes(x = n_votos, y = nota_imdb, text = title, color = ano)) + 
+        geom_point(size = 1.5, show.legend = F) +
+        scale_y_continuous(breaks = seq(0,10,2)) +
+        coord_cartesian(ylim = c(0,10)) +
+        labs(x = "Número de votos",
+                y = "Nota no IMDb") + 
+        theme_minimal() + 
+        theme(axis.text = element_text(size = 12, color = "black"),
+                axis.title = element_text(face = "bold", size = 12, color = "black"))
+        
+        votos_nota_grafico <- ggplotly(fig)
+        votos_nota_grafico
+        </pre>
+        <iframe src="/img/mapas-interativos/votos_notas3.html" height="600px" width="100%"></iframe>
          
     </div>   
 </body>
