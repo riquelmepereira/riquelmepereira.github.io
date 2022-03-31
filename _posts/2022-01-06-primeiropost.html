@@ -157,7 +157,7 @@ background: '/img/posts/primeiropost/bg-dicaprio.jpg'
     6     Action   Romance Thriller
         </pre>
         <p>
-        Poedemo ver agora os gêneros de filme em que o DiCaprio mais atuou:    
+        Podemos ver agora os gêneros de filme em que o DiCaprio mais atuou:    
         </p>
         <pre>
     # data frame com os gêneros
@@ -233,7 +233,31 @@ background: '/img/posts/primeiropost/bg-dicaprio.jpg'
         votos_nota_grafico
         </pre>
         <iframe src="/img/mapas-interativos/votos_notas3.html" height="600px" width="100%"></iframe>
-         
+        <p>
+        Vamos ver qual dos filmes do DiCaprio obteve maior interação dentro do IMDb, ou seja, mais votos:   
+        </p>
+        <pre>    
+        filmes_dicaprio %>% 
+        filter(n_votos == max(n_votos)) %>% 
+        select(title, year, nota_imdb, n_votos)
+        </pre>
+        <pre>
+        ##   title year nota_imdb n_votos
+        ## 1 Inception 2010       8.8 2238172    
+        </pre>
+        <p>Vejamos que "Inception" ("A Origem", em PT-Br) de 2010, foi o filme com mais votantes no IMDb, vejamos o com menor número: </p>
+        <pre>    
+        filmes_dicaprio %>% 
+        filter(n_votos == min(n_votos)) %>% 
+        select(title, year, nota_imdb, n_votos)
+        </pre>
+        <pre>
+        ##   title year nota_imdb n_votos
+        ## 1 Don's Plum 2001       5.7    4366    
+        </pre>
+        <p>E "Don's Plum", foi o com o menor engajamento, teve míseros 4366 votos. Esse é o "filme proibido" do ator, 
+        e recomendo o leitor ir atrás e entender o por quê essa obra ficou banida nos EUA até 2016.
+        </p>
     </div>   
 </body>
 </html>
