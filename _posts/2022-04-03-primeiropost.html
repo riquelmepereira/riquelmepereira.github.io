@@ -40,9 +40,13 @@ background: '/img/posts/primeiropost/bg-dicaprio.jpg'
         <p>Primeiramente, vamos importar as bibliotecas que iremos utlizar na nossa análise: </p>
 
         <pre><code>
-    library(tidyverse)
+    library(ggplot2)
+    library(dplyr)
+    library(glue)
     library(jsonlite)
+    library(janitor)
     library(plotly)
+    library(gganimate)
         </pre></code>
 
         <p>Agora, vamos utilizar a API do <a href="http://www.omdbapi.com/">OMBD</a> para a criação da base de dados. Ela concentra notas de filmes com reviews do Rotten Tomatoes, 
@@ -105,7 +109,7 @@ background: '/img/posts/primeiropost/bg-dicaprio.jpg'
     $ Website    chr: "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/~
     $ Response   chr: "True", "True", "True", "True", "True", "True", "Tru~
         </pre></code>
-
+        <h2>Arrumando o Data Frame</h2>
         <p>Vamos arrumar o nome das colunas para um padrão melhor de ser trabalhado, com a função <code>clean_names()</code> do pacote <i>janitor</i> isso é feito facilmente.
             Note que todas as colunas foram lidas como "character", então vamos alterar para um tipo numérico algumas colunas que
             serão usadas na análise. Além disso, temos que selecionar apenas as observações tiradas do IMDB, pois há também dados vindos do RottenTomatoes e Metacritic.</p>
@@ -132,9 +136,9 @@ background: '/img/posts/primeiropost/bg-dicaprio.jpg'
     mutate(n_votos = parse_number(imdb_id),
             nota_imdb = parse_number(imdb_rating),
             ano = parse_number(year))
-        </pre>       
-        <p> Na coluna "genre" temos os gêneros dos filmes em que o DiCapro atuou. Com a função <code>separate()</code> podemos criar colunas separadas para cada gênero e depois criarei um data frame com uma coluna somente com
-        uma coluna contendo os gêneros e outra servindo apenas de indexação:
+        </pre>  
+        <h2>Analisando os dados</h2>     
+        <p> Na coluna "genre" temos os gêneros dos filmes em que o DiCaprio atuou. Com a função <code>separate()</code> podemos criar colunas separadas para cada gênero e depois criarei um data frame com uma coluna que contém somente os gêneros e outra servindo apenas de indexação:
 
         </p>
 
@@ -198,12 +202,12 @@ background: '/img/posts/primeiropost/bg-dicaprio.jpg'
         
         <p>Vamos dar uma olhada nas medidas descritivas das notas dos filmes, pra termos uma ideia geral de como se comportam.</p>
         <pre>
-        filmes_dicaprio %>% 
-        summarise(min = min(nota_imdb),
-                    mediana = median(nota_imdb),
-                    media = mean(nota_imdb),
-                    max = max(nota_imdb),
-                    desv_padrao = sd(nota_imdb))    
+    filmes_dicaprio %>% 
+    summarise(min = min(nota_imdb),
+                mediana = median(nota_imdb),
+                media = mean(nota_imdb),
+                max = max(nota_imdb),
+                desv_padrao = sd(nota_imdb))    
         </pre>
         <pre>
         #  min mediana media max desv_padrao
@@ -218,7 +222,7 @@ background: '/img/posts/primeiropost/bg-dicaprio.jpg'
             gráficos interativos que permitem ao leitor visualizar o que cada ponto representa, passando o mouse em cima de um ponto.
         </p>
         <pre>
-        fig <- filmes_dicaprio %>% 
+    fig <- filmes_dicaprio %>% 
         ggplot(aes(x = n_votos, y = nota_imdb, text = title, color = ano)) + 
         geom_point(size = 1.5, show.legend = F) +
         scale_y_continuous(breaks = seq(0,10,2)) +
@@ -229,34 +233,85 @@ background: '/img/posts/primeiropost/bg-dicaprio.jpg'
         theme(axis.text = element_text(size = 12, color = "black"),
                 axis.title = element_text(face = "bold", size = 12, color = "black"))
         
-        votos_nota_grafico <- ggplotly(fig)
-        votos_nota_grafico
+    votos_nota_grafico <- ggplotly(fig)
+    votos_nota_grafico
         </pre>
         <iframe src="/img/mapas-interativos/votos_notas3.html" height="600px" width="100%"></iframe>
         <p>
-        Vamos ver qual dos filmes do DiCaprio obteve maior interação dentro do IMDb, ou seja, mais votos:   
+        Além do gráfico, podemos ver o filme com maior interação dentro do IMDb, ou seja, mais votos, dessa forma:   
         </p>
         <pre>    
-        filmes_dicaprio %>% 
+    filmes_dicaprio %>% 
         filter(n_votos == max(n_votos)) %>% 
         select(title, year, nota_imdb, n_votos)
         </pre>
         <pre>
-        ##   title year nota_imdb n_votos
-        ## 1 Inception 2010       8.8 2238172    
+    ##   title year nota_imdb n_votos
+    ## 1 Inception 2010       8.8 2238172    
         </pre>
         <p>Vejamos que "Inception" ("A Origem", em PT-Br) de 2010, foi o filme com mais votantes no IMDb, vejamos o com menor número: </p>
         <pre>    
-        filmes_dicaprio %>% 
+    filmes_dicaprio %>% 
         filter(n_votos == min(n_votos)) %>% 
         select(title, year, nota_imdb, n_votos)
         </pre>
         <pre>
-        ##   title year nota_imdb n_votos
-        ## 1 Don's Plum 2001       5.7    4366    
+    ##   title      year nota_imdb n_votos
+    ## 1 Don's Plum 2001       5.7    4366    
         </pre>
-        <p>E "Don's Plum", foi o com o menor engajamento, teve míseros 4366 votos. Esse é o "filme proibido" do ator, 
+        <p>E "Don's Plum", foi o com o menor engajamento, teve pouco mais de 4000 votos. Esse é o "filme proibido" do ator, 
         e recomendo o leitor ir atrás e entender o por quê essa obra ficou banida nos EUA até 2016.
+        </p>
+        <p>
+        Por fim, vamos responder a pergunta que motivou o post, qual o filme do DiCaprio com a maior nota?
+        </p>
+        <pre>
+    filmes_dicaprio %>% 
+        filter(nota_imdb == max(nota_imdb)) %>% 
+        select(title, year, nota_imdb, n_votos)    
+        </pre>
+        <pre>
+    ##    title     year nota_imdb n_votos
+    ## 1  Inception 2010       8.8 1375666    
+        </pre>
+        <p>
+        "Inception", assim como visto no gráfico, é o filme com a maior nota. O com a menor é:    
+        </p>
+        <pre>
+    filmes_dicaprio %>% 
+        filter(nota_imdb == min(nota_imdb)) %>% 
+        select(title, year, nota_imdb, n_votos)    
+        </pre>
+        <pre>
+    ##   title      year nota_imdb n_votos
+    ## 1 Critters 3 1991       4.4  101627    
+        </pre>        
+        <p>
+        "Critters 3", é o primeiro filme da carreira do DiCaprio e também o com a menor nota.  
+        </p>
+        <p>O gráfico gerado abaixo mostra como as notas dos filmes do ator evoluíram com o passar dos anos.
+            Utilizei o pacote <code>gganimate</code> para criar uma transição animada entre os anos. </p>
+        <pre>
+    filmes_dicaprio %>%
+        ggplot(aes(x=ano, y=nota_imdb)) +
+        geom_line(size = 1.2, colour = '#03318C') +
+        geom_point(colour = "#03318C") +
+        ggtitle("Evolução das notas dos filmes do DiCaprio") +
+        scale_x_continuous(breaks = seq(1990,2020,5)) +
+        theme_ipsum() +
+        ylab("Nota no IMDb") + 
+        xlab("Ano") + 
+        transition_reveal(ano)    
+        </pre>
+        <img src="/img/posts/primeiropost/ano-nota-evolucao4.gif">
+
+        <p>
+        Concluímos então que, o filme mais avaliado e também com maior nota do ator é "Inception" ('A Origem'), que é realmente um filme muito bom, mas não é o meu favorito.
+        Sou muito fã de "O Lobo de Wall-Street", ele sim seria o meu top 1, mas eu entendo o por quê "Incepetion" obteve essa posição, é daqueles filmes que explodem sua mente,
+        e geram muita discussão acerca dos acontecimentos, e tudo com um enredo muito bom e um elenco excelente.
+        </p>
+        <p> 
+        Aqui tratamos de utilizar a linguagem R para explorarmos dados do IMDb, com objetivo de analisar os filmes do Leonardo DiCaprio, e responder algumas questões que eu tive curiosidade.
         </p>
     </div>   
 </body>
